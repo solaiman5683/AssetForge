@@ -1,0 +1,33 @@
+# Development files
+.git
+.github
+.editorconfig
+.eslintrc
+.prettierrc
+.vscode
+.idea
+*.log
+
+# Build files
+dist
+tmp
+
+# Test files
+tests
+coverage
+jest.config.js
+
+# CI/CD
+.github
+.travis.yml
+.gitlab-ci.yml
+
+# Misc
+.DS_Store
+.env
+.env.*
+Dockerfile*
+docker-compose*
+*.md
+!README.md
+!docs/*.md

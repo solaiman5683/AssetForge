@@ -1,41 +1,64 @@
 {
-  "name": "assetforgelocal",
-  "version": "0.1.0",
-  "description": "Local asset optimization toolkit (images, pdf, audio, svg, json) with CLI + UI.",
-  "type": "module",
-  "main": "src/index.js",
-  "bin": {
-    "assetforge": "src/cli.js"
-  },
-  "scripts": {
-    "start": "node src/cli.js",
-    "ui": "node src/ui/server.js",
-    "dev:ui": "node src/ui/server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand"
-  },
-  "keywords": [
-    "assets",
-    "optimization",
-    "images",
-    "pdf",
-    "audio",
-    "svg",
-    "json",
-    "local"
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "@ffmpeg/ffmpeg": "^0.12.7",
-    "commander": "^12.1.0",
-    "formidable": "^3.5.1",
-    "pdf-lib": "^1.17.1",
-    "sharp": "^0.33.3",
-    "svgo": "^3.2.0"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0"
-  },
-  "engines": {
-    "node": ">=18"
-  }
+	"name": "assetforge",
+	"version": "1.0.0",
+	"description": "Local asset optimization toolkit (images, pdf, audio, svg, json) with CLI + UI.",
+	"type": "module",
+	"main": "src/index.js",
+	"bin": {
+		"assetforge": "src/cli.js"
+	},
+	"scripts": {
+		"start": "node src/cli.js",
+		"ui": "node src/ui/server.js",
+		"dev:ui": "node src/ui/server.js",
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+		"prepublishOnly": "npm test"
+	},
+	"files": [
+		"src/**/*",
+		"README.md",
+		"LICENSE",
+		"docs/**/*"
+	],
+	"keywords": [
+		"assets",
+		"optimization",
+		"images",
+		"pdf",
+		"audio",
+		"svg",
+		"json",
+		"local",
+		"compression",
+		"minify",
+		"resize",
+		"convert",
+		"watermark",
+		"cli",
+		"ui"
+	],
+	"author": "Solaiman <solaiman@example.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/solaiman5683/AssetForge.git"
+	},
+	"homepage": "https://github.com/solaiman5683/AssetForge#readme",
+	"bugs": {
+		"url": "https://github.com/solaiman5683/AssetForge/issues"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@ffmpeg/ffmpeg": "^0.12.7",
+		"commander": "^12.1.0",
+		"formidable": "^3.5.1",
+		"pdf-lib": "^1.17.1",
+		"sharp": "^0.33.3",
+		"svgo": "^3.2.0"
+	},
+	"devDependencies": {
+		"jest": "^29.7.0"
+	},
+	"engines": {
+		"node": ">=18"
+	}
 }
