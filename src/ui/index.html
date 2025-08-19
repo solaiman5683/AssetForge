@@ -1,0 +1,301 @@
+<!-- Replace existing index.html (minimal stable UI) with this extended version -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>AssetForgeLocal - Image Optimizer</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<style>
+			body {
+				font-family: system-ui, Arial, sans-serif;
+				margin: 0;
+				background: #0f172a;
+				color: #f1f5f9;
+			}
+			header {
+				padding: 14px 18px;
+				background: #1e293b;
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+			h1 {
+				font-size: 1rem;
+				margin: 0;
+				letter-spacing: 0.06em;
+			}
+			main {
+				padding: 18px;
+				max-width: 1250px;
+				margin: 0 auto;
+			}
+			.controls {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+				gap: 0.75rem;
+				margin-bottom: 1rem;
+			}
+			.controls label {
+				font-size: 0.65rem;
+				text-transform: uppercase;
+				letter-spacing: 0.07em;
+				font-weight: 600;
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
+			.controls input,
+			.controls select {
+				padding: 0.45rem 0.55rem;
+				border: 1px solid #334155;
+				background: #1e293b;
+				border-radius: 6px;
+				color: #f1f5f9;
+				font-size: 0.75rem;
+			}
+			button {
+				cursor: pointer;
+				border: 1px solid #3b82f6;
+				background: #3b82f6;
+				color: #fff;
+				font-weight: 600;
+				padding: 0.55rem 0.9rem;
+				border-radius: 6px;
+				font-size: 0.7rem;
+				letter-spacing: 0.05em;
+			}
+			button.secondary {
+				background: #1e293b;
+				color: #3b82f6;
+			}
+			button:disabled {
+				opacity: 0.5;
+				cursor: default;
+			}
+			#drop {
+				border: 2px dashed #334155;
+				border-radius: 10px;
+				min-height: 140px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				gap: 0.5rem;
+				padding: 28px;
+				background: #0f172a;
+				transition: border-color 0.2s, background 0.2s;
+			}
+			#drop.drag {
+				border-color: #3b82f6;
+				background: #1e293b;
+			}
+			#queueTable {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 16px;
+				font-size: 0.7rem;
+			}
+			#queueTable th,
+			#queueTable td {
+				border: 1px solid #334155;
+				padding: 6px 8px;
+			}
+			#queueTable th {
+				background: #1e293b;
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				font-size: 0.6rem;
+			}
+			.progress {
+				width: 120px;
+				background: #1e293b;
+				height: 6px;
+				border-radius: 4px;
+				overflow: hidden;
+				position: relative;
+				border: 1px solid #334155;
+			}
+			.progress span {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				width: 0%;
+				background: #3b82f6;
+				transition: width 0.2s;
+			}
+			.status-pending {
+				color: #94a3b8;
+			}
+			.status-processing {
+				color: #fbbf24;
+			}
+			.status-done {
+				color: #10b981;
+			}
+			.status-error {
+				color: #ef4444;
+			}
+			#messages {
+				min-height: 18px;
+				font-size: 0.65rem;
+				margin: 6px 0;
+				color: #94a3b8;
+			}
+			a.dl {
+				color: #3b82f6;
+				text-decoration: none;
+				font-weight: 600;
+			}
+			a.dl:hover {
+				text-decoration: underline;
+			}
+			#fileInput {
+				display: none;
+			}
+			.sectionTitle {
+				font-size: 0.7rem;
+				opacity: 0.75;
+				grid-column: 1/-1;
+				margin-top: 0.5rem;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>AssetForgeLocal - Image Optimizer</h1>
+			<div id="stats" style="font-size: 0.6rem; color: #94a3b8"></div>
+		</header>
+		<main>
+			<div class="controls">
+				<div class="sectionTitle">Core</div>
+				<label
+					>Width
+					<input id="width" type="number" min="1" placeholder="auto" />
+				</label>
+				<label
+					>Format
+					<select id="format">
+						<option value="">auto</option>
+						<option>jpeg</option>
+						<option>png</option>
+						<option>webp</option>
+						<option>avif</option>
+					</select>
+				</label>
+				<label
+					>Quality
+					<input id="quality" type="number" min="1" max="100" value="80" />
+				</label>
+				<label
+					>Strip Meta
+					<select id="stripMeta">
+						<option value="">no</option>
+						<option value="1">yes</option>
+					</select>
+				</label>
+				<label
+					>Concurrency
+					<input id="concurrency" type="number" min="1" max="4" value="2" />
+				</label>
+
+				<div class="sectionTitle">Watermark</div>
+				<label
+					>Text
+					<input id="watermark" type="text" placeholder="(blank = none)" />
+				</label>
+				<label
+					>Position
+					<select id="wm_position">
+						<option>southeast</option>
+						<option>south</option>
+						<option>southwest</option>
+						<option>east</option>
+						<option>center</option>
+						<option>west</option>
+						<option>northeast</option>
+						<option>north</option>
+						<option>northwest</option>
+					</select>
+				</label>
+				<label
+					>Color
+					<input id="wm_color" type="color" value="#ffffff" />
+				</label>
+				<label
+					>Opacity
+					<input
+						id="wm_opacity"
+						type="number"
+						min="0"
+						max="1"
+						step="0.05"
+						value="0.35" />
+				</label>
+				<label
+					>WM Scale
+					<input
+						id="wm_scale"
+						type="number"
+						min="0.1"
+						max="1"
+						step="0.05"
+						value="0.6" />
+				</label>
+				<label
+					>Font Size
+					<input id="wm_font" type="number" min="8" max="180" value="32" />
+				</label>
+				<label
+					>Stroke
+					<select id="wm_stroke">
+						<option value="">none</option>
+						<option value="1">yes</option>
+					</select>
+				</label>
+
+				<div class="sectionTitle">Actions</div>
+				<button id="addBtn" type="button" class="secondary">Add Files…</button>
+				<button id="processBtn" type="button">Process</button>
+				<button id="clearBtn" type="button" class="secondary">Clear</button>
+			</div>
+
+			<div id="messages"></div>
+			<div
+				id="drop"
+				tabindex="0"
+				aria-label="Drag and drop files or click to browse">
+				<strong>Drag & Drop Files</strong>
+				<div style="font-size: 0.7rem; color: #94a3b8">
+					Images / SVG / JSON / PDF / Audio<br />or Click to select
+				</div>
+			</div>
+			<input
+				id="fileInput"
+				type="file"
+				multiple
+				accept="image/*,.svg,.json,.pdf,audio/*" />
+			<table id="queueTable">
+				<thead>
+					<tr>
+						<th style="width: 240px">File</th>
+						<th>Type</th>
+						<th>Req Format</th>
+						<th>Result Format</th>
+						<th>Original</th>
+						<th>Optimized</th>
+						<th>Saved</th>
+						<th>Progress</th>
+						<th>Status</th>
+						<th>Download</th>
+						<th>Remove</th>
+					</tr>
+				</thead>
+				<tbody id="queueBody"></tbody>
+			</table>
+		</main>
+		<script type="module" src="./app.js"></script>
+	</body>
+</html>
