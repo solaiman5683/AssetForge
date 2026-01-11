@@ -1,0 +1,13 @@
+{
+	"name": "assetforge-desktop",
+	"version": "1.0.0",
+	"description": "Desktop image optimizer",
+	"main": "main.cjs",
+	"scripts": {
+		"start": "electron .",
+		"dev": "set NODE_ENV=development&& electron ."
+	},
+	"devDependencies": {
+		"electron": "^28.0.0"
+	}
+}
