@@ -11,8 +11,11 @@
 		"start": "node src/cli.js",
 		"ui": "node src/ui/server.js",
 		"dev:ui": "node src/ui/server.js",
+		"cloud": "node src/ui/server-cloud.js",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
-		"prepublishOnly": "npm test"
+		"prepublishOnly": "npm test",
+		"docker:build": "docker build -t assetforge .",
+		"docker:run": "docker-compose up"
 	},
 	"files": [
 		"src/**/*",
