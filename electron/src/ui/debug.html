@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Basic Debug Upload</title>
+	</head>
+	<body>
+		<h2>Basic Debug Upload</h2>
+		<input
+			id="pick"
+			type="file"
+			multiple
+			accept="image/*,.svg,.json,.pdf,audio/*" />
+		<button id="listBtn">List Selected</button>
+		<button id="uploadFirst">Upload First (image endpoint)</button>
+		<pre id="out" style="background: #eee; padding: 8px"></pre>
+		<script type="module">
+			const pick = document.getElementById('pick');
+			const out = document.getElementById('out');
+			const log = m => (out.textContent += m + '\\n');
+			document.getElementById('listBtn').onclick = () => {
+				if (!pick.files.length) return log('No files selected.');
+				[...pick.files].forEach(f =>
+					log(f.name + ' | ' + f.type + ' | ' + f.size + ' bytes')
+				);
+			};
+			document.getElementById('uploadFirst').onclick = async () => {
+				const f = pick.files[0];
+				if (!f) return log('No file chosen.');
+				log('Uploading: ' + f.name);
+				const fd = new FormData();
+				fd.append('file', f);
+				try {
+					const r = await fetch('/api/image', { method: 'POST', body: fd });
+					log('HTTP ' + r.status);
+					if (r.ok) {
+						const blob = await r.blob();
+						log('Returned blob size: ' + blob.size);
+					} else {
+						log('Error text: ' + (await r.text()));
+					}
+				} catch (e) {
+					log('Fetch error: ' + e.message);
+				}
+			};
+		</script>
+	</body>
+</html>

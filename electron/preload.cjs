@@ -12,6 +12,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     saveFile: (fileName, buffer) => 
         ipcRenderer.invoke('save-file', { fileName, buffer }),
     
+    saveZip: (files) => 
+        ipcRenderer.invoke('save-zip', { files }),
+    
     platform: process.platform,
     
     isDesktop: true

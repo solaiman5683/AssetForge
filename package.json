@@ -72,29 +72,29 @@
 	"build": {
 		"appId": "com.assetforge.app",
 		"productName": "AssetForge",
+		"asar": false,
 		"files": [
 			"electron/**/*",
-			"src/processors/**/*",
-			"src/utils/**/*",
-			"src/ui/index-desktop.html",
-			"src/ui/app-desktop.js",
-			"node_modules/**/*"
+			"!electron/dist"
 		],
 		"directories": {
-			"output": "dist"
+			"output": "electron/dist"
 		},
 		"win": {
 			"target": [
 				"nsis"
 			],
-			"icon": "electron/icon.ico"
+			"signingHashAlgorithms": [
+				"sha256"
+			],
+			"signAndEditExecutable": false,
+			"verifyUpdateCodeSignature": false
 		},
 		"linux": {
 			"target": [
 				"AppImage",
 				"deb"
 			],
-			"icon": "electron/icon.png",
 			"category": "Graphics"
 		},
 		"nsis": {
